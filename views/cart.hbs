@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your cart</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    {{> chat}}
+    {{> header}}
+
+    <section id="page-header">
+        <h2>New Summer Collections</h2>
+        <p>Save more with coupons & up to 70% off!</p>
+    </section>
+
+    <section id="cart" class="section-p1">
+        <table width="100%">
+            <thead>
+                <tr>
+                    <td>Remove</td>
+                    <td>Image</td>
+                    <td>Product</td>
+                    <td>Price</td>
+                    <td>Quantity</td>
+                    <td>Subtotal</td>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="cart-summary">
+            <p>Number of items in cart: <span class="cart-items"></span></p>
+            <p>Cart total: <span class="cart-total"></span></p>
+        </div>
+        <div id="order-success-message" style="color:green; margin-bottom: 10px"></div>
+        <button id="reset-cart">Delete Cart</button>
+        <button id="complete-order" data-user='{{stringify user}}'>Complete order</button>
+    </section>
+
+    <script src="/cartScript.js"></script>
+    <script>
+        const completeOrderButton = document.querySelector('#complete-order');
+        completeOrderButton.addEventListener('click', () => {
+            const userData = completeOrderButton.getAttribute('data-user');
+            console.log("userData:");
+            console.log(userData);
+            const user = JSON.parse(userData);
+            console.log("user:");
+            console.log(user);
+            completeOrder(user);
+        });
+    </script>
+
+    {{> footer}}
+
+</body>
+
+</html>

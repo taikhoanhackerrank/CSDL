@@ -1,0 +1,23 @@
+<ul id="navbar">
+  <li><a class="{{#if activeHome}}active{{/if}}" href="/">Home</a></li>
+  <li><a class="{{#if activeShop}}active{{/if}}" href="/shop">Products</a></li>
+  <li><a class="{{#if activeBlog}}active{{/if}}" href="/blog">Blog</a></li>
+  <li><a class="{{#if activeAbout}}active{{/if}}" href="/about">About</a></li>
+  <li><a class="{{#if activeContact}}active{{/if}}" href="/contact">Contact</a></li>
+  <li><a href="/cart"><i class="fas fa-shopping-bag"></i></a></li>
+  {{#if user}}
+  <li class="dropdown">
+    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">
+      <img src="/views/public/account_setting/img/user-avt.png" class="rounded shadow" style="width:20px">
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" href="/profile">Account</a>
+      <a class="dropdown-item" href="/profile">Setting</a>
+      <a class="dropdown-item" href="/logout">Log out</a>
+    </div>
+  </li>
+  {{else}}
+  <li><a href="/login">Login</a></li>
+  {{/if}}
+</ul>

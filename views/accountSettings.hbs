@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" type="text/css"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="public/account_setting/css/accountStyle.css">
+</head>
+
+<body>
+	<section class="py-5 my-5">
+		<div class="container">
+			<h1 class="mb-5">Account Settings</h1>
+			<div class="bg-white shadow rounded-lg d-block d-sm-flex">
+				<div class="profile-tab-nav border-right"> <!-- user nav bar-->
+					<div class="p-4"> <!-- Avt and Name -->
+						<div class="img-circle text-center mb-3">
+							<img src="./account_setting/img/user-avt.png" alt="Image" class="shadow"> <!-- avt -->
+						</div>
+						<h4 id="name" class="text-center">{{user.first_name}}</h4><!-- name -->
+					</div>
+					<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical"> <!-- nav bar -->
+						<a class="nav-link active" id="account-tab" data-toggle="pill" href="#account" role="tab" aria-controls="account" aria-selected="true">
+							<i class="fa fa-home text-center mr-1"></i> <!-- account info-->
+							Account Profile
+						</a>
+						<a class="nav-link" id="password-tab" data-toggle="pill" href="#password" role="tab" aria-controls="password" aria-selected="false">
+							<i class="fa fa-key text-center mr-1"></i> <!-- Change password -->
+							Password Changes
+						</a>
+						<a class="nav-link" id="security-tab" data-toggle="pill" href="#security" role="tab" aria-controls="security" aria-selected="false">
+							<i class="fa fa-user text-center mr-1"></i> <!-- Security -->
+							Security
+						</a>
+						<a class="nav-link" id="application-tab" data-toggle="pill" href="#application" role="tab" aria-controls="application" aria-selected="false">
+							<i class="fa fa-tv text-center mr-1"></i> <!-- application-->
+							Application
+						</a>
+						<a class="nav-link" id="notification-tab" data-toggle="pill" href="#notification" role="tab" aria-controls="notification" aria-selected="false">
+							<i class="fa fa-bell text-center mr-1"></i> <!-- notification -->
+							Notification
+						</a>
+					</div>
+				</div>
+                <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
+                    <!-- Account settings panel -->
+                    <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+                        <form id="account-form" method="POST" action="/api/users/{{user.id}}">
+                            <h3 class="mb-4">Account Settings</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <input id="first-name-input" type="text" class="form-control" name="first_name"
+                                            value="{{user.first_name}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <input type="text" class="form-control" name="last_name"
+                                            value="{{user.last_name}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Username</label>
+                                        <input type="text" class="form-control" name="username"
+                                            value="{{user.username}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" name="email" value="{{user.email}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Phone number</label>
+                                        <input type="text" class="form-control" name="phone_number"
+                                            value="{{user.phone_number}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <input type="text" class="form-control" name="address" value="{{user.address}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Other details</label>
+                                        <textarea class="form-control" name="others" rows="4">{{user.others}}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{#if accountErr}}
+                            <div class="alert alert-danger" style="background-color:blue;color:red; font-size:12px">
+                                {{accountErr}}</div>
+                            {{/if}}
+
+                            <div id="update-message" style="color:green; margin-bottom: 10px"></div>
+
+                            <div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="button" class="btn btn-light" onclick="resetForm()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Change password -->
+                    <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+                        <form id="password-form" method="POST" action="/api/users/password/{{user.id}}">
+                            <h3 class="mb-4">Password Changes</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group"> <!-- old password -->
+                                        <label>Current password</label>
+                                        <input type="password" class="form-control" name="oldPassword"
+                                            value="{{user.password}}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group"> <!-- new password -->
+                                        <label>New password</label>
+                                        <input type="password" class="form-control" name="newPassword">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group"> <!-- confirmation -->
+                                        <label>Confirm new password</label>
+                                        <input type="password" class="form-control" name="confirmNewPassword">
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{#if passwordErr}}
+                            <div class="alert alert-danger" style="color:red; font-size:12px">{{passwordErr}}</div>
+                            {{/if}}
+
+                            <div id="update-message2" style="color:green; margin-bottom: 10px"></div>
+
+                            <div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="button" class="btn btn-light" onclick="resetForm()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                        <!-- Bảo mật -->
+                        <h3 class="mb-4">Security Settings</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Login</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Two-factor auth</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="recovery">
+                                        <label class="form-check-label" for="recovery">
+                                            Recovery
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary">Update</button>
+                            <button class="btn btn-light">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="application" role="tabpanel" aria-labelledby="application-tab">
+                        <!-- Check lịch sử hoạt động-->
+                        <h3 class="mb-4">Application Settings</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="app-check">
+                                        <label class="form-check-label" for="app-check">
+                                            App check
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+                                        <label class="form-check-label" for="defaultCheck2">
+                                            Check this to become handsome
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary">Update</button>
+                            <button class="btn btn-light">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="notification" role="tabpanel" aria-labelledby="notification-tab">
+                        <!-- Thông báo-->
+                        <h3 class="mb-4">Notification Settings</h3>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="notification1">
+                                <label class="form-check-label" for="notification1">
+                                    Get the latest products information
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="notification2">
+                                <label class="form-check-label" for="notification2">
+                                    Get information about discounts, special offers, coupons...
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="notification3">
+                                <label class="form-check-label" for="notification3">
+                                    Notify if order reached destination
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary">Update</button>
+                            <button class="btn btn-light">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+	<script>
+        const updateMessage = document.getElementById("update-message");
+        const updateMessage2 = document.getElementById("update-message2");
+		function resetForm() {
+			document.getElementById("account-form").reset();
+			document.getElementById("password-form").reset();
+			document.getElementsByName("newPassword")[0].value = "";
+			document.getElementsByName("confirmNewPassword")[0].value = "";
+		}
+		document.querySelector('#account-form').addEventListener('submit', function(e) {
+			e.preventDefault();
+			var formData = new URLSearchParams(new FormData(this)); // create a URLSearchParams object
+			var url = this.getAttribute('action');
+			console.log("Form data from script:");
+			for (var pair of formData.entries()) {
+				console.log(pair[0]+ ', ' + pair[1]); 
+			}
+			fetch(url, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+				},
+				body: formData.toString() // convert URLSearchParams object to string
+			})
+			.then(response => {
+				console.log("Successful");
+				//update the first name in the name header
+				var firstNameInput = document.querySelector('#first-name-input');
+				var firstName = firstNameInput.value;
+				var nameHeader = document.querySelector('#name');
+				nameHeader.textContent = firstName;
+                updateMessage.innerHTML = "Account updated successfully!";
+			})
+			.catch(error => {
+				console.error(error);
+                updateMessage.innerHTML = "Failed to update account. Please try again later.";
+			});
+		});
+
+        document.querySelector('#password-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var formData = new URLSearchParams(new FormData(this)); // create a URLSearchParams object
+            var url = this.getAttribute('action');
+            console.log("Form data from script:");
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ', ' + pair[1]);
+            }
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: formData.toString() // convert URLSearchParams object to string
+            })
+                .then(response => {
+                    // Handle successful response
+                    console.log("Successful");
+                    updateMessage2.innerHTML = "Password updated successfully!";
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error(error);
+                    updateMessage.innerHTML = "Failed to update password. Please try again later.";
+                });
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+
+</html>
